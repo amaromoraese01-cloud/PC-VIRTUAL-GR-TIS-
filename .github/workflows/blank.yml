@@ -1,10 +1,7 @@
-name: Executar PC Virtual
+name: Virtual PC Online
 
 on:
-  push:
-    branches: [ "principal", "main" ]
-  pull_request:
-    branches: [ "principal", "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
