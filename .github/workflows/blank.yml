@@ -1,0 +1,47 @@
+class MiniVM:
+    def __init__(self):
+        # 4 registradores de uso geral: R0, R1, R2, R3
+        self.registers = [0, 0, 0, 0]
+        # Ponteiro de instrução (Instruction Pointer / PC)
+        self.ip = 0
+        
+    def execute(self, program):
+        self.ip = 0
+        while self.ip < len(program):
+            instruction = program[self.ip]
+            opcode = instruction[0]
+            
+            if opcode == "MOV":    # Atribui um valor numérico a um registrador
+                _, reg, val = instruction
+                self.registers[reg] = val
+                
+            elif opcode == "ADD":  # Soma R1 + R2 e armazena o resultado em R1
+                _, reg1, reg2 = instruction
+                self.registers[reg1] += self.registers[reg2]
+                
+            elif opcode == "SUB":  # Subtrai R1 - R2 e armazena o resultado em R1
+                _, reg1, reg2 = instruction
+                self.registers[reg1] -= self.registers[reg2]
+                
+            elif opcode == "PRINT": # Exibe o valor contido no registrador
+                _, reg = instruction
+                print(f"[VM OUTPUT] Registrador R{reg}: {self.registers[reg]}")
+                
+            self.ip += 1
+
+# --- Instanciando e testando a Máquina Virtual ---
+vm = MiniVM()
+
+# Programa Exemplo para a VM: Executar a conta (10 + 5) - 3
+programa = [
+    ("MOV", 0, 10),    # R0 = 10
+    ("MOV", 1, 5),     # R1 = 5
+    ("MOV", 2, 3),     # R2 = 3
+    ("ADD", 0, 1),     # R0 = R0 + R1  (10 + 5 = 15)
+    ("SUB", 0, 2),     # R0 = R0 - R2  (15 - 3 = 12)
+    ("PRINT", 0)       # Deve exibir o resultado: 12
+]
+
+print("--- Iniciando a Execução na Máquina Virtual ---")
+vm.execute(programa)
+print("--- Execução Finalizada ---")
